@@ -1,5 +1,5 @@
 # coddie 
-Easily encrypt/decrypt files on the fly with a very strong algorithm
+    Easily encrypt/decrypt files on the fly with a very strong algorithm
 
 ## Usage
     coddie [-d] {-a 1|2|3} {-h 1|2|3} [FILE]...
@@ -20,4 +20,4 @@ Easily encrypt/decrypt files on the fly with a very strong algorithm
       coddie -d foo.txt
 
 ## WARNING
-Be sure to remember the settings you use to encrypt a file because without them you're not able to decrypt it back!
+    Be sure to remember the settings you use to encrypt a file because without them you're not able to decrypt it back!
