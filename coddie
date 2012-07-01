@@ -1,0 +1,148 @@
+#!/bin/bash
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Copyright 2012 Luigi Abbamonte                                      # 
+#                                                                     #
+# coddie is free software: you can redistribute it and/or modify  it  #
+# under the terms of the GNU General Public License as published by   #
+# the Free Software Foundation, either version 3 of the License, or   #
+# (at your option) any later version.                                 #
+#                                                                     #
+# coddie is distributed in the hope that it will be useful, but       #
+# WITHOUT ANY WARRANTY; without even the implied warranty of          #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU    #
+# General Public License for more details.                            #
+#                                                                     #
+# You should have received a copy of the GNU General Public License   #
+# along with coddie. If not, see http://www.gnu.org/licenses/.        #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Setting constants
+PROGRAMNAME=coddie
+VERSION=0.1
+LASTEDITDATE="01/07/2012"
+
+USAGE="\n$PROGRAMNAME - ver. $VERSION ($LASTEDITDATE)\n
+Easily encrypt/decrypt files on the fly with a very strong algorithm\n
+\n
+Usage: $PROGRAMNAME [-d] {-a 1|2|3} {-h 1|2|3} [FILE]...\n
+\n
+Options:\n
+-e\t\tEncrypt [FILE] (default)\n
+-d\t\tDecrypt [FILE]\n
+-a N\t\tSets the level of AES algorithm used for encrypt/decrypt [FILE]:\n
+\t\t1 - weak (default), 2 - normal, 3 - strong\n
+-h N\t\tSets the level of SHA algorithm used for compute the password's\n
+\t\tchecksum: 1 - weak (default), 2 - normal, 3 - strong\n"
+
+# Setting defaults
+aeslvl=aes-128-cbc
+hashlvl=md5sum
+todo=""
+EXT=cdf
+
+if [ $# -lt 1 ]
+then
+  echo "Too few arguments!"
+  echo -e $USAGE
+  exit 1
+fi
+
+# Getting options
+while getopts ":a:h:de" opt
+do
+  case "$opt" in
+    "a")
+      case "$OPTARG" in
+        "1")
+          aeslvl=aes-128-cbc
+          ;;
+        "2")
+          aeslvl=aes-192-cbc
+          ;;
+        "3")
+          aeslvl=aes-256-cbc
+          ;;
+        *)
+          echo "Wrong level $OPTARG: please choose 1, 2 or 3"
+          echo -e $USAGE
+          exit 1
+          ;;
+      esac
+      ;;
+    "h")
+      case "$OPTARG" in
+        "1")
+          hashlvl=md5sum
+          ;;
+        "2")
+          hashlvl=sha1sum
+          ;;
+        "3")
+          hashlvl=sha224sum
+          ;;
+        *)
+          echo "Wrong level $OPTARG: please choose 1, 2 or 3"
+          echo -e $USAGE
+          exit 1
+          ;;
+      esac
+      ;;
+    "d")
+      todo="-d"
+      ;;
+    "e")
+      todo=""
+      ;;
+    "?")
+      echo "$OPTARG: opzione sconosciuta."
+      echo -e $USAGE
+      exit 1
+      ;;
+    ":")
+      echo "$OPTARG: nessun argomento."
+      echo -e $USAGE
+      exit 1
+      ;;
+    *)
+      echo -e $USAGE
+      exit 1
+      ;;
+  esac
+done
+
+# Getting & checking input file
+args=("$@")
+i=$(($# - 1))
+infile=${args[$i]}
+
+if [ ! -e $infile ]
+then
+  echo "Wrong/missing input file: $infile"
+  echo -e $USAGE
+  exit 1
+fi
+
+# Getting password
+read -p "Password: " -s pass; echo
+
+# Computing password
+pass=`echo $pass | $hashlvl | cut -d ' ' -f 1`
+
+# Doing requested operation
+if [ -z "$todo" ]
+then
+  outfile="${infile%.*}.enc"
+  echo "Encrypting $infile..."
+else
+  outfile="${infile%.*}.dec"
+  echo "Decrypting $infile..."
+fi
+
+openssl $aeslvl -k $pass $todo -salt -in $infile -out $outfile
+
+# Some output
+echo -e "Done!"
+printf "Used aes-$aeslvl-cbc and $hashlvl checksum on $infile to $outfile\n"
+exit 0
+
