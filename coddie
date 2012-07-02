@@ -1,26 +1,27 @@
 #!/bin/bash
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Copyright 2012 Luigi Abbamonte                                      # 
-#                                                                     #
-# coddie is free software: you can redistribute it and/or modify  it  #
-# under the terms of the GNU General Public License as published by   #
-# the Free Software Foundation, either version 3 of the License, or   #
-# (at your option) any later version.                                 #
-#                                                                     #
-# coddie is distributed in the hope that it will be useful, but       #
-# WITHOUT ANY WARRANTY; without even the implied warranty of          #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU    #
-# General Public License for more details.                            #
-#                                                                     #
-# You should have received a copy of the GNU General Public License   #
-# along with coddie. If not, see http://www.gnu.org/licenses/.        #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# coddie                                                                #
+#  Copyright (C) 2012 eu-slack <eu-slack [at] mail [dot] com>           #
+#                                                                       #
+#  This program is free software: you can redistribute it and/or modify #
+#  it under the terms of the GNU General Public License as published by #
+#  the Free Software Foundation, either version 3 of the License, or    #
+#  (at your option) any later version.                                  #
+#                                                                       #
+#  This program is distributed in the hope that it will be useful,      #
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of	    #
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the	        #
+#  GNU General Public License for more details.                         #
+#                                                                       #
+#  You should have received a copy of the GNU General Public License    #
+#  along with this program. If not, see http://www.gnu.org/licenses/    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #	#
 
 # Setting constants
 PROGRAMNAME=coddie
-VERSION=0.1
-LASTEDITDATE="01/07/2012"
+VERSION=0.2
+LASTEDITDATE="02/07/2012"
 
 USAGE="\n$PROGRAMNAME - ver. $VERSION ($LASTEDITDATE)\n
 Easily encrypt/decrypt files on the fly with a very strong algorithm\n
